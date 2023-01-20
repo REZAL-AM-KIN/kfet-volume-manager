@@ -1,0 +1,38 @@
+<!-- slider.html -->
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container has-text-centered">
+        <div class="columns">
+            <div class="column is-6 is-offset-3">
+                <div class="card">
+                    <header class="card-header">
+                            <p style="flex-grow:unset; margin:auto;" class="card-header-title has-text-centered">Gestion du volume de la kfet</p>
+                    </header>
+                    <div class="card-content">
+                        <div class="content">
+
+                            <label for="slider">Volume</label>
+                            <input type="range" min="0" max="100" value="50" id="slider" oninput="sendValue()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block script %}
+ function sendValue() {
+            var value = document.getElementById("slider").value;
+            fetch("/slider_value", {
+                method: "POST",
+                body: JSON.stringify({value: value}),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => response.text())
+            .then(data => console.log(data));
+        }
+{% endblock %}
