@@ -13,7 +13,11 @@
         {% endwith %}
         {% if form.errors%}
             <div class="notification is-danger">
-                {{ form.errors.username[0] }}
+                 {% if form.errors.username %}
+                    {{ form.errors.username[0] }}
+                {% else %}
+                    {{ form.errors }}
+                {% endif %}
             </div>
         {% endif %}
         <form method="POST">

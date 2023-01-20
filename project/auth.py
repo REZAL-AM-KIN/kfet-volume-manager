@@ -18,6 +18,9 @@ def login():
     if form.validate_on_submit():
         # Successfully logged in, We can now access the saved user object
         # via form.user.
+        if form.user == "Unautorized":
+            flash("Vous n'êtes pas autorisé à accéder à cette ressource")
+            return render_template("login.html", form=form)
         if request.form.get('remember'):
             login_user(form.user, remember=True)
         else:

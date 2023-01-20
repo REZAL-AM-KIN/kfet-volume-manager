@@ -1,0 +1,43 @@
+#Variable useful for app
+SECRET_KEY = 'secret-key-goes-here'
+SQLALCHEMY_DATABASE_URI = 'sqlite:///db.sqlite'
+DEBUG = True
+
+# Setup LDAP Configuration Variables.
+
+# Hostname of your LDAP Server
+LDAP_HOST = 'ldap.kin'
+
+# Username pour se connecter au serveur ldap
+# Voir identifiant pour l'utilisateur en read-only (cf liste identifiant)
+LDAP_BIND_USER_DN = ""
+
+# Password de l'utilisateur utilisé pour se connecter
+LDAP_BIND_USER_PASSWORD = ""
+
+# Base DN of your directory
+LDAP_BASE_DN = 'dc=rezal,dc=fr'
+
+#Indique les groupes que les utilisateurs doivent avoir pour être autorisé à se connecter
+#Si =  ou pas définis, alors tous les utilisateurs peuvent se connecter
+#sinon indiquer une liste des cn séparé par des espaces ex: team_rezal team_elec
+#Pensez a toujours mettre team_rezal dans la liste des autorisés
+REQUIRED_GROUPS = team_rezal
+
+#Config of LDAP structure
+
+# Users DN to be prepended to the Base DN
+LDAP_USER_DN = 'ou=users'
+
+# Groups DN to be prepended to the Base DN
+LDAP_GROUP_DN = 'ou=groups'
+
+# The RDN attribute for your user schema on LDAP
+LDAP_USER_RDN_ATTR = 'cn'
+
+# The Attribute you want users to authenticate to LDAP with.
+LDAP_USER_LOGIN_ATTR = 'cn'
+
+LDAP_GROUP_OBJECT_FILTER = '(objectclass=groupOfNames)'
+LDAP_GROUP_MEMBERS_ATTR = 'member'
+

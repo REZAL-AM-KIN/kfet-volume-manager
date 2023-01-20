@@ -8,4 +8,4 @@ main = Blueprint('main', __name__)
 @main.route('/')
 @login_required
 def index():
-    return "Hello "+current_user.username
+    return "Hello "+current_user.username + "<br/> Vous groupes sont: " + ", ".join(current_user.memberships)
