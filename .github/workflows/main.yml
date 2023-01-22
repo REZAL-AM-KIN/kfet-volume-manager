@@ -1,0 +1,6 @@
+name: Deployment automation
+
+on: 
+  push:
+    branches: [master]
+    
