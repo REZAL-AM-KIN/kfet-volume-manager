@@ -23,3 +23,15 @@ class User(UserMixin, db.Model):
     @memberships.setter
     def memberships(self, value):
         self._memberships = ";".join(value)
+
+
+class Slider(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    value = db.Column(db.Integer(), nullable=False)
+    max = db.Column(db.Integer(), default=100)
+
+    def __init__(self, value):
+        self.value = value
+
+    def __repr__(self):
+        return f'<Slider {self.id}: {self.value}>'

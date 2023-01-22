@@ -1,0 +1,72 @@
+<!-- slider.html -->
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container has-text-centered">
+        <div class="columns">
+            <div class="column is-full-mobile is-6-tablet is-offset-3-desktop">
+                <div class="card">
+                    <header class="card-header">
+                        <p style="flex-grow:unset; margin:auto;" class="card-header-title has-text-centered">Gestion du volume de la kfet</p>
+                         <div class="field is-grouped is-grouped-right">
+                                <p class="control" style="display: flex; align-items: center; margin-right: 10px;">
+                                    <a href="/logout" class="icon">
+                                      <i class="ti ti-logout" style="font-size:32px;"></i>
+                                    </a>
+                                </p>
+                        </div>
+                    </header>
+                    <div class="card-content">
+                        <div class="content">
+                            {% if displayMax %}
+                            <div class="field">
+                                <label class="label">Maximum</label>
+                                <div class="control">
+                                    <input type="range" style="width:100%" min="0" max="1000" value={{slider.max}} id="slider_max" ontouchend="sendMax()" onmouseup="sendMax()">
+                                </div>
+                            </div>
+                            {% endif %}
+
+                            <div class="field">
+                                <label class="label">Volume</label>
+                                <div class="control">
+                                    <input type="range" style="width:100%" min="0" max="1000" value={{slider.value}} id="slider_value" ontouchend="sendValue()" onmouseup="sendValue()">
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block script %}
+ function sendValue() {
+            var value = document.getElementById("slider_value").value;
+            fetch("/slider_value", {
+                method: "POST",
+                body: JSON.stringify({value: value}),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => response.text())
+            .then(data => console.log(data));
+        }
+
+ function sendMax() {
+            var value = document.getElementById("slider_max").value;
+            fetch("/slider_max", {
+                method: "POST",
+                body: JSON.stringify({max: value}),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => response.text())
+            .then(data => console.log(data));
+        }
+{% endblock %}

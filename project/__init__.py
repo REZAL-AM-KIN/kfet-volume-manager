@@ -5,7 +5,8 @@ from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 
 # init SQLAlchemy so we can use it later in our models
-from project.settings import LDAP_BASE_DN, REQUIRED_GROUPS
+from project.settings import LDAP_BASE_DN, REQUIRED_GROUPS, I2C_POTAR_ADRESS
+from slider_driver import setValue
 
 db = SQLAlchemy()
 
@@ -21,11 +22,14 @@ def create_app():
     ldap_manager = LDAP3LoginManager(app)
     login_manager.login_view = 'auth.login'
 
-
-
-
+    print("I2C init")
+    i2c = I2C.Device(I2C_POTAR_ADRESS, 1)
+    # Initialisation de l'objet potentiomètre
+    app.potentiometer = Adafruit_DS3502.DS3502(i2c)
+    print("I2C init pass")
 
     from .models import User
+    from .models import Slider
 
     # Declare a User Loader for Flask-Login.
     # Simply returns the User if it exists in our 'database', otherwise
@@ -73,8 +77,26 @@ def create_app():
         app.register_blueprint(main_blueprint)
 
         # Create Database Models
-        print("creating database")
+        print("Creating database")
         db.create_all()
+
+        # Creation of slider
+        if len(Slider.query.all()) == 0:
+            print("No slider found id db : creation of slider")
+            slider = Slider(
+                value=0
+            )
+            db.session.add(slider)
+            db.session.commit()
+
+        if len(Slider.query.all()) != 1:
+            print("Error, multiple slider : cleaning up database")
+            # Delete all entries in the Slider table
+            db.session.query(Slider).delete()
+            # Commit the changes to the database
+            db.session.commit()
+
+        setValue(db.session.query(Slider).first())
 
 
         return app

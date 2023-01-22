@@ -42,3 +42,10 @@ LDAP_GROUP_MEMBERS_ATTR = environ.get('LDAP_GROUP_MEMBERS_ATTR')
 if REQUIRED_GROUPS := environ.get("REQUIRED_GROUPS", None):
     REQUIRED_GROUPS = REQUIRED_GROUPS.split(" ") if " " in REQUIRED_GROUPS else [REQUIRED_GROUPS]
 
+#Liste des groupes autorisés à régler le max de l'ampli
+if MAX_DISPLAY_GROUPS := environ.get("MAX_DISPLAY_GROUPS", None):
+    MAX_DISPLAY_GROUPS = MAX_DISPLAY_GROUPS.split(" ") if " " in MAX_DISPLAY_GROUPS else [MAX_DISPLAY_GROUPS]
+
+I2C_POTAR_ADRESS = int(environ.get('I2C_POTAR_ADRESS'), 16)
+
+
