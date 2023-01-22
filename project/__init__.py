@@ -1,4 +1,3 @@
-import ldap3
 from flask import Flask
 from flask_ldap3_login import LDAP3LoginManager
 from flask_login import LoginManager
@@ -6,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 # init SQLAlchemy so we can use it later in our models
 from project.settings import LDAP_BASE_DN, REQUIRED_GROUPS, I2C_POTAR_ADRESS
-from slider_driver import setValue
+from project.slider_driver import setValue
 
 db = SQLAlchemy()
 

@@ -1,8 +1,7 @@
 from flask import Blueprint, render_template, request
 from flask_login import login_required, current_user
 
-import slider_driver
-from . import db
+from . import db, slider_driver
 from .models import Slider
 from .settings import MAX_DISPLAY_GROUPS
 

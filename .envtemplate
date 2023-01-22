@@ -1,7 +1,7 @@
 #Variable useful for app
 SECRET_KEY = 'secret-key-goes-here'
 SQLALCHEMY_DATABASE_URI = 'sqlite:///db.sqlite'
-DEBUG = True
+DEBUG = False
 
 # Setup LDAP Configuration Variables.
 
@@ -14,6 +14,18 @@ LDAP_BIND_USER_DN = ""
 
 # Password de l'utilisateur utilisé pour se connecter
 LDAP_BIND_USER_PASSWORD = ""
+
+#Indique les groupes que les utilisateurs doivent avoir pour être autorisé à se connecter
+#Si =  ou pas définis, alors tous les utilisateurs peuvent se connecter
+#sinon indiquer une liste des cn séparé par des espaces ex: team_rezal team_elec
+#Pensez a toujours mettre team_rezal dans la liste des autorisés
+REQUIRED_GROUPS = team_rezal team_elec team_kfet zt_cercle
+
+#Indique les groupes qui ont le droit de régler le maximum de l'ampli
+#Même principe que pour le REQUIRED_GROUPS
+MAX_DISPLAY_GROUPS = team_rezal team_elec zt_cercle
+
+I2C_POTAR_ADRESS = 0x2D
 
 # Base DN of your directory
 LDAP_BASE_DN = 'dc=rezal,dc=fr'
