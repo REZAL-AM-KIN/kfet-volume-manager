@@ -4,8 +4,6 @@ from datetime import datetime
 from project.models import Automation, Slider
 from project import db, setValue
 
-
-#Ce script doit être exécuter à part, il est en charge d'effectuer les changement sur la base de donnée
 from wsgi import app
 
 
@@ -39,6 +37,7 @@ def schedule_changes():
     print("reloading completed")
 
 
-while True:
-    schedule.run_pending()
-    time.sleep(1)
+def run_scheduler():
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
