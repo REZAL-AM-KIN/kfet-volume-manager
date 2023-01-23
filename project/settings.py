@@ -7,6 +7,7 @@ load_dotenv('.env')
 SECRET_KEY = environ.get('SECRET_KEY')
 SQLALCHEMY_DATABASE_URI = environ.get('SQLALCHEMY_DATABASE_URI')
 DEBUG = environ.get('DEBUG')
+DEV = environ.get('DEV')
 
 # Setup LDAP Configuration Variables. Change these to your own settings.
 # All configuration directives can be found in the documentation.

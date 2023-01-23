@@ -35,3 +35,11 @@ class Slider(db.Model):
 
     def __repr__(self):
         return f'<Slider {self.id}: {self.value}>'
+
+
+class Automation(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    time = db.Column(db.Time(), nullable=False)
+    value = db.Column(db.Integer(), nullable=False)
+
+

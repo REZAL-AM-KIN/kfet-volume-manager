@@ -4,10 +4,9 @@ from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 
 # init SQLAlchemy so we can use it later in our models
-from project.settings import LDAP_BASE_DN, REQUIRED_GROUPS, I2C_POTAR_ADRESS
+from project.settings import LDAP_BASE_DN, REQUIRED_GROUPS, I2C_POTAR_ADRESS, DEV
 from project.slider_driver import setValue
-import board
-import adafruit_ds3502
+
 
 
 db = SQLAlchemy()
@@ -24,11 +23,16 @@ def create_app():
     ldap_manager = LDAP3LoginManager(app)
     login_manager.login_view = 'auth.login'
 
-    print("I2C init")
-    i2c = board.I2C()
-    # Initialisation de l'objet potentiomètre
-    app.potentiometer = adafruit_ds3502.DS3502(i2c)
-    print("I2C init pass")
+    if not DEV:
+        import board
+        import adafruit_ds3502
+        print("I2C init")
+        i2c = board.I2C()
+        # Initialisation de l'objet potentiomètre
+        app.potentiometer = adafruit_ds3502.DS3502(i2c)
+        print("I2C init pass")
+    else:
+        print("DEV MODE, NO I2C !!")
 
     from .models import User
     from .models import Slider

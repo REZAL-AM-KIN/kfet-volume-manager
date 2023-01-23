@@ -33,8 +33,44 @@
                                     <input type="range" style="width:100%" min="0" max="127" value={{slider.value}} id="slider_value" ontouchend="sendValue()" onmouseup="sendValue()">
                                 </div>
                             </div>
+                        </div>
+                         <div class="card">
+                             <header class="card-header">
+                                 <p style="flex-grow:unset; margin:auto;" class="card-header-title has-text-centered">Automatisation</p>
+                             </header>
 
+                             <div class="card-content" style="padding: 5px">
+                                 <div class="content">
+                                     {% if automations|length==0 %}
+                                        <p>Aucune automatisation enregistrée</p>
+                                     {% endif %}
+                                     {% for automation in automations %}
+                                        <div style="display:flex; margin-bottom:6px">
+                                            <input disabled type="time" value="{{automation.time}}">
+                                            <input disabled type="range" style="flex: 1" min="0" max="127" value="{{automation.value}}">
+                                            <a href="/delete_automation?id={{automation.id}}" class="icon">
+                                                <i class="ti ti-trash" style="font-size:18px;"></i>
+                                            </a>
+                                        </div>
+                                     {% endfor %}
+                                 </div>
 
+                                 <form method="post" style="border: solid; padding: 5px; border-radius: 4px" action="/add_automation">
+                                     {% with messages = get_flashed_messages() %}
+                                        {% if messages %}
+                                            <div class="notification is-danger">
+                                                {{ messages[0] }}
+                                            </div>
+                                        {% endif %}
+                                    {% endwith %}
+                                    <div style="display:flex">
+                                        <input type="time" name="time_automation" value="{{ request.form['time_automation'] }}">
+                                        <input type="range" style="flex: 1" min="0" max="127" name="slider_value_automation" value="{{request.form['slider_value_automation']}}">
+                                    </div>
+                                    <button type="submit" class="ti ti ti-circle-plus" style="font-size:32px; color: green; border: none; background-color: transparent"></button>
+                                </form>
+
+                             </div>
 
                         </div>
                     </div>
