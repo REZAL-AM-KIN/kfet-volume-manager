@@ -29,8 +29,8 @@ def schedule_changes():
         automations = db.session.query(Automation).all()
         # Schedule the change_slider_value function to run at the specified hour
         for automation in automations:
-            schedule.every().day.at(f"{automation.time.strftime('%H:%M')}").do(change_slider_value, automation_id=automation.id)
-            print("Add routine: value "+automation.value+" at"+automation.time.strftime('%H:%M'))
+            schedule.every().day.at(f"{automation.time}").do(change_slider_value, automation_id=automation.id)
+            print("Add routine: value "+str(automation.value)+" at "+automation.time)
 
 
 while True:

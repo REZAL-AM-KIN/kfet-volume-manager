@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask_login import UserMixin
 
 from . import db
@@ -39,7 +41,15 @@ class Slider(db.Model):
 
 class Automation(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
-    time = db.Column(db.Time(), nullable=False)
+    _time = db.Column(db.Time(), nullable=False)
     value = db.Column(db.Integer(), nullable=False)
+
+    @property
+    def time(self):
+        return self._time.strftime('%H:%M')
+
+    @time.setter
+    def time(self, time):
+        self._time = datetime.strptime(time, "%H:%M").time()
 
 

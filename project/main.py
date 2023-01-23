@@ -47,7 +47,7 @@ def slider_max():
 @login_required
 @main.route('/add_automation', methods=['POST'])
 def add_automation():
-    print(request.form)
+
     time = request.form['time_automation']
     value = request.form['slider_value_automation']
 
@@ -59,13 +59,12 @@ def add_automation():
         flash("Vous devez entrer une valeur")
         return redirect("/")
 
-    time = datetime.strptime("02:00", "%H:%M").time()
-
     automation = Automation(time=time, value=value)
     db.session.add(automation)
     db.session.commit()
 
     return redirect("/")
+
 
 @login_required
 @main.route("/delete_automation", methods=['GET'])
