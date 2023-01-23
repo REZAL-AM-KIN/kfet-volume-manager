@@ -6,7 +6,7 @@ from project import db, setValue
 
 
 #Ce script doit être exécuter à part, il est en charge d'effectuer les changement sur la base de donnée
-
+from wsgi import app
 
 
 def change_slider_value(automation_id):
@@ -22,13 +22,14 @@ def change_slider_value(automation_id):
 
 @schedule.repeat(schedule.every().minutes)
 def schedule_changes():
-    print("reloading automation tasks")
-    schedule.clear()
-    # Get all the changes
-    automations = db.session.query(Automation).all()
-    # Schedule the change_slider_value function to run at the specified hour
-    for automation in automations:
-        schedule.every().day.at(f"{automation.time.strftime('%H:%M')}").do(change_slider_value, automation_id=automation.id)
+    with app.app_context():
+        print("reloading automation tasks")
+        schedule.clear()
+        # Get all the changes
+        automations = db.session.query(Automation).all()
+        # Schedule the change_slider_value function to run at the specified hour
+        for automation in automations:
+            schedule.every().day.at(f"{automation.time.strftime('%H:%M')}").do(change_slider_value, automation_id=automation.id)
 
 
 while True:
