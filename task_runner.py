@@ -1,11 +1,13 @@
 import schedule
 import time
 from datetime import datetime
+from project.models import Automation, Slider
+from project import db, setValue
 
-from . import db, setValue
-from .models import Slider, Automation
 
 #Ce script doit être exécuter à part, il est en charge d'effectuer les changement sur la base de donnée
+
+
 
 def change_slider_value(automation_id):
     # Get the automation for the current hour
