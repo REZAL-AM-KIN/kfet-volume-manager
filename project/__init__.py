@@ -8,16 +8,12 @@ from project.settings import LDAP_BASE_DN, REQUIRED_GROUPS, I2C_POTAR_ADRESS, DE
 from project.slider_driver import setValue
 
 
-
-db = SQLAlchemy()
-
-
 def create_app():
     app = Flask(__name__)
 
     app.config.from_pyfile("settings.py")
 
-    db.init_app(app)
+    db = SQLAlchemy(app)
 
     login_manager = LoginManager(app)
     ldap_manager = LDAP3LoginManager(app)
@@ -36,6 +32,12 @@ def create_app():
 
     from .models import User
     from .models import Slider
+
+    # Permet de fermer les connexions à la base de donnée pour permettre l'accès au script qui execute les taches
+    # Régulière (cf task_runner)
+    @app.teardown_request
+    def teardown_request(exception):
+        db.session.remove()
 
     # Declare a User Loader for Flask-Login.
     # Simply returns the User if it exists in our 'database', otherwise

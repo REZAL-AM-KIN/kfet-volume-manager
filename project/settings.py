@@ -4,6 +4,8 @@ from dotenv import load_dotenv
 
 load_dotenv('.env')
 
+SQLALCHEMY_POOL_SIZE = 5
+
 SECRET_KEY = environ.get('SECRET_KEY')
 SQLALCHEMY_DATABASE_URI = environ.get('SQLALCHEMY_DATABASE_URI')
 DEBUG = environ.get('DEBUG')
