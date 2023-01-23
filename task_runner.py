@@ -12,12 +12,12 @@ from wsgi import app
 def change_slider_value(automation_id):
     # Get the automation for the current hour
     automation = db.session.query(Automation).get(automation_id)
-
     # Get the first slider
     slider = db.session.query(Slider).first()
     slider.value = automation.value
     db.session.commit()
     setValue(slider)
+    print("Value set to "+str(slider.value))
 
 
 @schedule.repeat(schedule.every().minutes)
