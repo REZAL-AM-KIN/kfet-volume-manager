@@ -7,13 +7,14 @@ from flask_sqlalchemy import SQLAlchemy
 from project.settings import LDAP_BASE_DN, REQUIRED_GROUPS, I2C_POTAR_ADRESS, DEV
 from project.slider_driver import setValue
 
+db = SQLAlchemy()
 
 def create_app():
     app = Flask(__name__)
 
     app.config.from_pyfile("settings.py")
 
-    db = SQLAlchemy(app)
+    db.init_app(app)
 
     login_manager = LoginManager(app)
     ldap_manager = LDAP3LoginManager(app)
