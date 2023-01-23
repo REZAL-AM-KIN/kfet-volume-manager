@@ -1,11 +1,14 @@
+import threading
+
 from flask import Flask
 from flask_ldap3_login import LDAP3LoginManager
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 
 # init SQLAlchemy so we can use it later in our models
-from project.settings import LDAP_BASE_DN, REQUIRED_GROUPS, I2C_POTAR_ADRESS, DEV
-from project.slider_driver import setValue
+from .settings import LDAP_BASE_DN, REQUIRED_GROUPS, I2C_POTAR_ADRESS, DEV
+from .slider_driver import setValue
+
 
 db = SQLAlchemy()
 
@@ -20,6 +23,7 @@ def create_app():
     ldap_manager = LDAP3LoginManager(app)
     login_manager.login_view = 'auth.login'
 
+
     if not DEV:
         import board
         import adafruit_ds3502
@@ -33,12 +37,6 @@ def create_app():
 
     from .models import User
     from .models import Slider
-
-    # Permet de fermer les connexions à la base de donnée pour permettre l'accès au script qui execute les taches
-    # Régulière (cf task_runner)
-    @app.teardown_request
-    def teardown_request(exception):
-        db.session.remove()
 
     # Declare a User Loader for Flask-Login.
     # Simply returns the User if it exists in our 'database', otherwise
@@ -106,6 +104,8 @@ def create_app():
             db.session.commit()
 
         setValue(db.session.query(Slider).first())
+
+
 
 
         return app

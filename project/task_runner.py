@@ -1,10 +1,11 @@
 import schedule
 import time
-from datetime import datetime
-from project.models import Automation, Slider
-from project import db, setValue
 
 from wsgi import app
+from .models import Automation, Slider
+from . import db, setValue
+
+
 
 
 def change_slider_value(automation_id):
@@ -23,7 +24,8 @@ def change_slider_value(automation_id):
         import traceback
         print(traceback.format_exc())
 
-@schedule.repeat(schedule.every().minutes)
+
+@schedule.repeat(schedule.every().seconds)
 def schedule_changes():
     print("reloading automation tasks")
     with app.app_context():
@@ -38,6 +40,7 @@ def schedule_changes():
 
 
 def run_scheduler():
+    print("Task scheduler started")
     while True:
         schedule.run_pending()
         time.sleep(1)
