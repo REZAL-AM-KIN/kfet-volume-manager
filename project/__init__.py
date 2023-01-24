@@ -1,5 +1,6 @@
 import threading
 
+import schedule
 from flask import Flask
 from flask_ldap3_login import LDAP3LoginManager
 from flask_login import LoginManager
@@ -22,6 +23,9 @@ def create_app():
     login_manager = LoginManager(app)
     ldap_manager = LDAP3LoginManager(app)
     login_manager.login_view = 'auth.login'
+
+    from .task_runner import Task_runner
+    task_runner = Task_runner(app)
 
 
     if not DEV:
@@ -105,7 +109,8 @@ def create_app():
 
         setValue(db.session.query(Slider).first())
 
-
-
+        schedule.every().minute.at(":00").do(task_runner.schedule_changes)
+        task_thread = threading.Thread(target=task_runner.run_scheduler)
+        task_thread.start()
 
         return app
