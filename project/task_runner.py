@@ -1,12 +1,11 @@
-import schedule
-import time
-
-from flask import current_app
+from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.triggers.cron import CronTrigger
 
 
 class Task_runner:
     def __init__(self, app):
         self.app = app
+        self.scheduler = BackgroundScheduler()
 
     def change_slider_value(self, automation_id):
         from . import db, setValue
@@ -26,23 +25,27 @@ class Task_runner:
             import traceback
             print(traceback.format_exc())
 
-
     def schedule_changes(self):
         from . import db
         from .models import Automation
         print("reloading automation tasks")
         with self.app.app_context():
-            schedule.clear()
+            # clear all the scheduled tasks
+            self.scheduler.remove_all_jobs()
+
             # Get all the changes
             automations = db.session.query(Automation).all()
             # Schedule the change_slider_value function to run at the specified hour
             for automation in automations:
-                schedule.every().day.at(f"{automation.time}").do(self.change_slider_value, automation_id=automation.id)
-                print("Add routine: value "+str(automation.value)+" at "+automation.time)
+                hour, minute = automation.time.split(":")
+                self.scheduler.add_job(self.change_slider_value, trigger=CronTrigger(hour=hour, minute=minute),
+                                       args=[automation.id])
+                print("Add routine: value " + str(automation.value) + " at " + automation.time)
         print("reloading completed")
 
     def run_scheduler(self):
         print("Task scheduler started")
-        while True:
-            schedule.run_pending()
-            time.sleep(0.5)
+        self.scheduler.start()
+
+        # Schedule the task_runner.schedule_changes to run every minute
+        self.scheduler.add_job(self.schedule_changes, 'interval', minutes=1)
